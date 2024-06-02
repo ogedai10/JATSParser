@@ -2,6 +2,7 @@
 
 use JATSParser\Body\DispQuote;
 use JATSParser\Body\Document as JATSDocument;
+use JATSParser\HTML\Equation;
 use JATSParser\HTML\Par as  Par;
 use JATSParser\HTML\Listing as Listing;
 use Seboettg\CiteProc\StyleSheet;
@@ -193,6 +194,11 @@ class Document extends \DOMDocument {
 					$verseGroup = new Verse();
 					$parentEl->appendChild($verseGroup);
 					$verseGroup->setContent($articleSection);
+					break;
+				case "JATSParser\Body\Equation":
+					$equationGroup = new Equation();
+					$parentEl->appendChild($equationGroup);
+					$equationGroup->setContent($articleSection);
 					break;
 				case "JATSParser\Body\Text":
 					// For elements that extend Section, like disp-quote
