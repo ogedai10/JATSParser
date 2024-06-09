@@ -1,6 +1,6 @@
 <?php namespace JATSParser\Body;
 
-class Equation extends AbstractElement {
+class InlineEquation extends AbstractElement {
 
 	private $content = null;
 	private $attrib;
@@ -12,9 +12,9 @@ class Equation extends AbstractElement {
 
 	public function __construct(\DOMElement $element) {
 		parent::__construct($element);
-		$this->xpath->query("disp-formula", $element);
+		$this->xpath->query("inline-formula", $element);
 		$math = str_replace("mml:","",$this->innerHTML($element));
-		$math = str_replace("mml-eqn-","eqn-",$math);
+		$math = str_replace("mml-ieqn-","ieqn-",$math);
 		$this->content = $math;
 		$this->attrib = $this->extractFormattedText(".//id", $element);
 	}

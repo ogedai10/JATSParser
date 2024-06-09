@@ -57,10 +57,13 @@ class Par implements JATSElement {
 			if ($className = array_search($blockElement->tagName, $blockNodesMappedArray)) {
 				$className = "JATSParser\Body\\" . $className;
 				$jatsBlockEl = new $className($blockElement);
-				$this->blockElements[] = $jatsBlockEl;
+				if ("JATSParser\Body\InlineEquation" != $className) {
+					$this->blockElements[] = $jatsBlockEl;
+				}
 			}
-
-			$blockElement->parentNode->removeChild($blockElement);
+			if ("JATSParser\Body\InlineEquation" != $className) {
+				$blockElement->parentNode->removeChild($blockElement);
+			}
 		}
 
 	}

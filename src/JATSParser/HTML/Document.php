@@ -2,6 +2,7 @@
 
 use JATSParser\Body\DispQuote;
 use JATSParser\Body\Document as JATSDocument;
+use JATSParser\HTML\InlineEquation;
 use JATSParser\HTML\Equation;
 use JATSParser\HTML\Par as  Par;
 use JATSParser\HTML\Listing as Listing;
@@ -199,6 +200,11 @@ class Document extends \DOMDocument {
 					$equationGroup = new Equation();
 					$parentEl->appendChild($equationGroup);
 					$equationGroup->setContent($articleSection);
+					break;
+				case "JATSParser\Body\InlineEquation":
+					$InlineequationGroup = new InlineEquation();
+					$parentEl->appendChild($InlineequationGroup);
+					$InlineequationGroup->setContent($articleSection);
 					break;
 				case "JATSParser\Body\Text":
 					// For elements that extend Section, like disp-quote
