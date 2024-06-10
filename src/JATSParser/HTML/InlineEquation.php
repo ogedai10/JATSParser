@@ -6,8 +6,8 @@ use JATSParser\Body\InlineEquation as JATSInlineEquation;
 
 class InlineEquation extends \DOMElement {
 
-	public function __construct() {
-		parent::__construct("span");
+	public function __construct($tag = "span") {
+		parent::__construct($tag);
 	}
 
 	public function appendHTML(DOMNode $parent, $source) {

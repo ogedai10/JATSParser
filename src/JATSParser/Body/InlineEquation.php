@@ -12,7 +12,6 @@ class InlineEquation extends AbstractElement {
 
 	public function __construct(\DOMElement $element) {
 		parent::__construct($element);
-		$this->xpath->query("inline-formula", $element);
 		$math = str_replace("mml:","",$this->innerHTML($element));
 		$math = str_replace("mml-ieqn-","ieqn-",$math);
 		$this->content = $math;

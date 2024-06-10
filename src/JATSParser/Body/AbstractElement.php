@@ -79,7 +79,7 @@ abstract class AbstractElement implements JATSElement {
 	}
 
 	static function mappedBlockElements() {
-		return ["Figure" => "fig", "Table" => "table-wrap", "Equation" => "disp-formula", "InlineEquation" => "inline-formula"];
+		return ["Figure" => "fig", "Table" => "table-wrap", "Equation" => "disp-formula"];
 	}
 }
 

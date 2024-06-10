@@ -3,6 +3,7 @@
 use JATSParser\Body\JATSElement as JATSElement;
 use JATSParser\Body\Document as Document;
 use JATSParser\Body\Text as Text;
+use JATSParser\Body\InlineEquation as InlineEquation;
 
 class Par implements JATSElement {
 
@@ -17,10 +18,15 @@ class Par implements JATSElement {
 
 		// Parse content
 		$content = array();
-		$parTextNodes = $xpath->query(".//text()", $paragraph);
+		$parTextNodes = $xpath->query(".//text()|.//inline-formula", $paragraph);
 		foreach ($parTextNodes as $parTextNode) {
-			$jatsText = new Text($parTextNode);
-			$content[] = $jatsText;
+			if (get_class($parTextNode) == "DOMElement" && $parTextNode->tagName == "inline-formula") {
+				$jatsText = new InlineEquation($parTextNode);
+				$content[] = $jatsText;
+			} else if (get_class($parTextNode) == "DOMText" && strpos($parTextNode->getNodePath(), "mml:math") === false){
+				$jatsText = new Text($parTextNode);
+				$content[] = $jatsText;
+			}
 		}
 		$this->content = $content;
 	}
@@ -57,13 +63,9 @@ class Par implements JATSElement {
 			if ($className = array_search($blockElement->tagName, $blockNodesMappedArray)) {
 				$className = "JATSParser\Body\\" . $className;
 				$jatsBlockEl = new $className($blockElement);
-				if ("JATSParser\Body\InlineEquation" != $className) {
-					$this->blockElements[] = $jatsBlockEl;
-				}
+				$this->blockElements[] = $jatsBlockEl;
 			}
-			if ("JATSParser\Body\InlineEquation" != $className) {
-				$blockElement->parentNode->removeChild($blockElement);
-			}
+			$blockElement->parentNode->removeChild($blockElement);
 		}
 
 	}

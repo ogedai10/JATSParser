@@ -201,11 +201,11 @@ class Document extends \DOMDocument {
 					$parentEl->appendChild($equationGroup);
 					$equationGroup->setContent($articleSection);
 					break;
-				case "JATSParser\Body\InlineEquation":
-					$InlineequationGroup = new InlineEquation();
-					$parentEl->appendChild($InlineequationGroup);
-					$InlineequationGroup->setContent($articleSection);
-					break;
+				// case "JATSParser\Body\InlineEquation":
+				// 	$InlineequationGroup = new InlineEquation();
+				// 	$parentEl->appendChild($InlineequationGroup);
+				// 	$InlineequationGroup->setContent($articleSection);
+				// 	break;
 				case "JATSParser\Body\Text":
 					// For elements that extend Section, like disp-quote
 					Text::extractText($articleSection, $parentEl);
