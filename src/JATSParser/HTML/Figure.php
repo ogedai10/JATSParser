@@ -48,7 +48,17 @@ class Figure extends \DOMElement {
 			$spanTitle->setAttribute("class", "title");
 			$titleNode->appendChild($spanTitle);
 			foreach ($jatsFigure->getTitle() as $figureTitle) {
-				HTMLText::extractText($figureTitle, $spanTitle);
+				if (get_class($figureTitle) === "JATSParser\Body\Equation") {
+					$equationGroup = new Equation("span");
+					$spanTitle->appendChild($equationGroup);
+					$equationGroup->setContent($figureTitle);
+				} else if (get_class($figureTitle) === "JATSParser\Body\InlineEquation") {
+					$InlineequationGroup = new InlineEquation();
+					$spanTitle->appendChild($InlineequationGroup);
+					$InlineequationGroup->setContent($figureTitle);
+				} else {
+					HTMLText::extractText($figureTitle, $spanTitle);
+				}
 			}
 		}
 

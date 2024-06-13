@@ -58,11 +58,16 @@ abstract class AbstractElement implements JATSElement {
 		$captionNodes = $this->xpath->query(".//caption", $element);
 		foreach ($captionNodes as $captionNode) {
 			if ($extractType === self::JATS_EXTRACT_TITLE) {
-				$titleElements = $this->xpath->query(".//title//text()", $captionNode);
+				$titleElements = $this->xpath->query(".//title//text()|.//inline-formula", $captionNode);
 				if ($titleElements->length > 0) {
 					foreach ($titleElements as $titleElement) {
-						$jatsText = new Text($titleElement);
-						$titleOrCaption[] = $jatsText;
+						if (get_class($titleElement) == "DOMElement" && $titleElement->tagName == "inline-formula") {
+							$inlineEquation = new InlineEquation($titleElement);
+							$titleOrCaption[] = $inlineEquation;
+						} if (get_class($titleElement) == "DOMText" && strpos($titleElement->getNodePath(), "mml:math") === false) {
+							$jatsText = new Text($titleElement);
+							$titleOrCaption[] = $jatsText;
+						}
 					}
 				}
 

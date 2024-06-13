@@ -3,6 +3,8 @@
 use JATSParser\Body\JATSElement as JATSElement;
 use JATSParser\Body\Text as Text;
 use JATSParser\Body\Par as Par;
+use JATSParser\Body\InlineEquation as InlineEquation;
+use JATSParser\Body\Equation as Equation;
 
 class Cell extends AbstractElement {
 
@@ -30,6 +32,12 @@ class Cell extends AbstractElement {
 			if ($childNode->nodeName === "p") {
 				$par = new Par($childNode);
 				$content[] = $par;
+			} else if ($childNode->nodeName === "inline-formula") {
+				$inlineEquation = new InlineEquation($childNode);
+				$content[] = $inlineEquation;
+			} else if ($childNode->nodeName === "disp-formula") {
+				$equation = new Equation($childNode);
+				$content[] = $equation;
 			} else {
 				$jatsTextNodes = $xpath->query(".//self::text()", $childNode);
 				foreach ($jatsTextNodes as $jatsTextNode){

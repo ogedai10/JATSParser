@@ -36,6 +36,16 @@ class Cell extends \DOMElement {
 					$this->appendChild($par);
 					$par->setContent($cellContents);
 					break;
+				case "JATSParser\Body\Equation":
+					$equationGroup = new Equation("span");
+					$this->appendChild($equationGroup);
+					$equationGroup->setContent($cellContents);
+					break;
+				case "JATSParser\Body\InlineEquation":
+					$InlineequationGroup = new InlineEquation();
+					$this->appendChild($InlineequationGroup);
+					$InlineequationGroup->setContent($cellContents);
+					break;
 				case "JATSParser\Body\Text":
 					HTMLText::extractText($cellContents, $this);
 					break;

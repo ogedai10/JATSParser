@@ -83,7 +83,17 @@ class Table extends \DOMElement {
 			$spanTitle->setAttribute("class", "title");
 			$titleNode->appendChild($spanTitle);
 			foreach ($jatsTable->getTitle() as $tableTitle) {
-				HTMLText::extractText($tableTitle, $spanTitle);
+				if (get_class($tableTitle) === "JATSParser\Body\Equation") {
+					$equationGroup = new Equation("span");
+					$spanTitle->appendChild($equationGroup);
+					$equationGroup->setContent($tableTitle);
+				} else if (get_class($tableTitle) === "JATSParser\Body\InlineEquation") {
+					$InlineequationGroup = new InlineEquation();
+					$spanTitle->appendChild($InlineequationGroup);
+					$InlineequationGroup->setContent($tableTitle);
+				} else {
+					HTMLText::extractText($tableTitle, $spanTitle);
+				}
 			}
 		}
 		

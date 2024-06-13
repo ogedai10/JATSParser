@@ -7,8 +7,8 @@ use JATSParser\HTML\Text as HTMLText;
 
 class Equation extends \DOMElement {
 
-	public function __construct() {
-		parent::__construct("div");
+	public function __construct($tag = "div") {
+		parent::__construct($tag);
 	}
 
 	public function appendHTML(DOMNode $parent, $source) {
