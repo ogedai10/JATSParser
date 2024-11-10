@@ -31,6 +31,13 @@ class Document extends \DOMDocument {
 
 		$articleSections = $this->jatsDocument->getArticleSections();
 		$this->extractContent($articleSections);
+		$this->setFootnotes();
+	}
+
+	public function setFootnotes(): void {
+		if (!empty($this->jatsDocument->getFootnotes())) {
+			$this->extractFootnotes($this->jatsDocument->getFootnotes());
+		}
 	}
 
 	/**
@@ -211,6 +218,38 @@ class Document extends \DOMDocument {
 					Text::extractText($articleSection, $parentEl);
 					break;
 			}
+		}
+	}
+
+	protected function extractFootnotes(): void {
+		if (empty($this->jatsDocument->getFootnotes())) {
+			return;
+		}
+	
+		$footnotesHeading = $this->createElement("h2");
+		$footnotesHeading->setAttribute("class", "footnotes-section-title");
+		$footnotesHeading->nodeValue = "Notes";
+		$this->appendChild($footnotesHeading);
+	
+		$listEl = $this->createElement('div');
+		$listEl->setAttribute('class', 'notes');
+		$this->appendChild($listEl);
+		foreach ($this->jatsDocument->getFootnotes() as $fnId => $footnoteData) {
+			$fnListItem = $this->createElement('div');
+			$fnListItem->setAttribute('class', 'note');
+			$fnListItem->setAttribute('id', $fnId);
+	
+			$footnoteLink = $this->createElement('a');
+			$footnoteLink->setAttribute('class', 'noteNum');
+			$footnoteLink->setAttribute('href', "#".$fnId."_return");
+			$footnoteLink->appendChild($this->createTextNode($footnoteData['label']."."));
+			$fnListItem->appendChild($footnoteLink);
+	
+			$fragment = $this->createDocumentFragment();
+			$fragment->appendXML($footnoteData['content']);
+			$fnListItem->appendChild($fragment);
+			
+			$listEl->appendChild($fnListItem);
 		}
 	}
 
