@@ -29,7 +29,17 @@ class Listing extends \DOMElement {
 					$nestedList->setContent($jatsListText);
 				} elseif (get_class($jatsListText) === "JATSParser\Body\Par") {
 					foreach ($jatsListText->getContent() as $jatsInsideText) {
-						HTMLText::extractText($jatsInsideText, $listItem);
+						if (get_class($jatsInsideText) === "JATSParser\Body\Equation") {
+							$equationGroup = new Equation("span");
+							$listItem->appendChild($equationGroup);
+							$equationGroup->setContent($jatsInsideText);
+						} else if (get_class($jatsInsideText) === "JATSParser\Body\InlineEquation") {
+							$InlineequationGroup = new InlineEquation();
+							$listItem->appendChild($InlineequationGroup);
+							$InlineequationGroup->setContent($jatsInsideText);
+						} else {
+							HTMLText::extractText($jatsInsideText, $listItem);
+						}
 					}
 
 					/* Paragraphs inside list are not supported by TCPDF
